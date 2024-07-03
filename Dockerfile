@@ -27,7 +27,7 @@ WORKDIR /usr/share/nginx/html
 RUN rm -rf *
 
 #copy the existing build to nginx directory, from=build d /app/build is the source directory, . is the current directory
-COPY --from=builder /app/next .
+COPY --from=builder /app/.next .
 
 # nginx always serves the 80 port only
 EXPOSE 80
