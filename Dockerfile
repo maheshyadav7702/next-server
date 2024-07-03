@@ -1,7 +1,7 @@
 FROM node:alpine3.18 as build
 
 # build app
-FROM base AS builder
+FROM build AS builder
 WORKDIR /app
 COPY package.json ./
 RUN npm install
