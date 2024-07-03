@@ -1,6 +1,7 @@
 FROM node:alpine3.18 as build
 
 # build app
+FROM base AS builder
 WORKDIR /app
 COPY package.json ./
 RUN npm install
@@ -26,7 +27,7 @@ WORKDIR /usr/share/nginx/html
 RUN rm -rf *
 
 #copy the existing build to nginx directory, from=build d /app/build is the source directory, . is the current directory
-COPY --from=next /app/next .
+COPY --from=builder /app/next .
 
 # nginx always serves the 80 port only
 EXPOSE 80
