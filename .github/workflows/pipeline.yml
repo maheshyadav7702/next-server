@@ -26,8 +26,9 @@ jobs:
         run: docker push maheshyadav7702/nextjs-app:latest
 
   deploy:
-    runs-on: self-hosted
     needs: build
+    runs-on: self-hosted
+
     steps:
       - name: Pull image from the Docker hub
         run: docker pull maheshyadav7702/nextjs-app:latest
