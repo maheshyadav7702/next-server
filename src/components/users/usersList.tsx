@@ -33,8 +33,8 @@ const UsersList = () => {
           </thead>
           <tbody>
             {list?.length > 0 &&
-              list?.map((user) => (
-                <tr key={user._id}>
+              list?.map((user:any, index:number) => (
+                <tr key={index}>
                   <td>{user?.name}</td>
                   <td>{user.email}</td>
                   <td>{user.city}</td>
