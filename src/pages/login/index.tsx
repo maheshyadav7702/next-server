@@ -1,11 +1,12 @@
+import axios from "axios";
 import React, { useState } from "react";
 
 const Index = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value);
+    setEmail(e.target.value);
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -14,9 +15,21 @@ const Index = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Add your login logic here
-    console.log("Username:", username);
-    console.log("Password:", password);
+    axios
+      .post("http://localhost:8000/auth/login", {
+        email,
+        password,
+      })
+      .then((res) => {
+        console.log(res.data);
+        setEmail("");
+        setPassword("");
+        alert("Login successful");
+      })
+      .catch((error) => {
+        console.error(error);
+        alert("Login failed");
+      });
   };
 
   return (
@@ -28,7 +41,7 @@ const Index = () => {
           <input
             type="text"
             id="username"
-            value={username}
+            value={email}
             onChange={handleUsernameChange}
           />
         </div>
