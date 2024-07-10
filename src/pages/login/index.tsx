@@ -1,3 +1,4 @@
+import LoginComp from "@/components/login/loginComp";
 import axios from "axios";
 import React, { useState } from "react";
 
@@ -34,28 +35,7 @@ const Index = () => {
 
   return (
     <div>
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="username">Username:</label>
-          <input
-            type="text"
-            id="username"
-            value={email}
-            onChange={handleUsernameChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={handlePasswordChange}
-          />
-        </div>
-        <button type="submit">Login</button>
-      </form>
+      <LoginComp />
     </div>
   );
 };
