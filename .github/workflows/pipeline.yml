@@ -3,7 +3,7 @@ name: Deploy nextjs application
 on:
   push:
     branches:
-      - master
+      - master1
 
 jobs:
   build:
@@ -33,6 +33,6 @@ jobs:
       - name: Pull image from the Docker hub
         run: docker pull maheshyadav7702/nextjs-app:latest
       - name: Stop and Remove existing container
-        run: docker rm -f mahesh-container  
+        run: docker rm -f mahesh-container
       - name: Run Docker Container
         run: docker run -d -p 3000:3000 --name mahesh-container maheshyadav7702/nextjs-app

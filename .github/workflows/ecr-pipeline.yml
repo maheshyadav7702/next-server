@@ -1,0 +1,47 @@
+name: Build and Push Docker Image to ECR
+
+on:
+  push:
+    branches: ["master"]
+
+env:
+  AWS_REGION: ${{secrets.AWS_REGION}}
+  ECR_REPOSITORY: next-server-repo
+  IMAGE_TAG: ${{ github.sha }}
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  deploy:
+    name: Build and Push Docker Image to ECR
+    runs-on: ec2
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        run: aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+
+      - name: Build Docker Image
+        id: build-image
+        run: docker build -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} .
+
+      - name: Tag Docker Image
+        id: tag-image
+        run: docker tag ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}:latest
+
+      - name: Push Docker Image
+        id: push-image
+        run: docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
