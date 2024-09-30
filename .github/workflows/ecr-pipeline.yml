@@ -16,7 +16,7 @@ permissions:
 jobs:
   image_builder:
     name: Build and Push Docker Image to ECR
-    runs-on: ["self-hosted", "ec2"]
+    runs-on: ["self-hosted", "ecr"]
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v2
